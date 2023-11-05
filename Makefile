@@ -1,15 +1,16 @@
-# === 各种路径变量
+# === 各种路径变量 Begin
 TOPDIR := $(shell pwd)
 export TOPDIR
 
+# TODO 链接脚本路径, 头文件搜索路径 Begin
 LDPATH :=
 
 # 头文件搜索路径
-INCDIRS := 	$(TOPDIR)/src  		\
-			$(TOPDIR)/example
-# === End
+INCDIRS :=
+# TODO 链接脚本路径, 头文件搜索路径 End
+# === 各种路径变量 End
 
-# === 交叉编译工具链设置
+# === 交叉编译工具链设置 Begin
 ARCH  ?= arm
 CROSS_COMPILE ?= arm-linux-
 
@@ -35,7 +36,7 @@ export STRIP OBJCOPY OBJDUMP
 # 函数的作用是将 INCDIRS 变量中的每个元素（目录名）前面加上 -I, 以构建用于指定头文件搜索路径的参数
 INCFLAGS := $(patsubst %, -I %, $(INCDIRS))
 
-# == 编译选项
+# == 编译选项 Begin
 # 警告选项
 # 	-Wall : 开启所有常见的警告提示 \
   	-Wextra : 开启额外的警告提示, 包括一些非常规的代码风格和一些潜在的问题 \
@@ -59,23 +60,27 @@ CHARENCODINGFLAGS := -fexec-charset=gbk
 
 CFLAGS := -fomit-frame-pointer -nostdlib
 CFLAGS += $(WARNFLAGS) $(OPTIMIZEFLAGS) $(CHARENCODINGFLAGS)
-# == End
+# == 编译选项 End
 
+# TODO 链接选项 Beign
 # 链接选项
 # LDFLAGS := -T$(LDPATH)
 LDFLAGS :=
+# TODO 链接选项 End
 
 export CFLAGS LDFLAGS INCFLAGS
-# === End
+# === 交叉编译工具链设置 End
 
+# TODO 被编译的目录, 被编译的当前目录下的文件 Beign
 # 编译目标文件的名称
 TARGET := test
 
 # 被编译的当前目录下的文件
-obj-y += src/
+obj-y +=
 
 # 被编译的子目录
-obj-y += example/
+obj-y += bootloader/
+# TODO 被编译的目录, 被编译的当前目录下的文件 End
 
 all : start_recursive_build $(TARGET).bin
 	@echo $(TARGET) has been built!
@@ -88,7 +93,7 @@ $(TARGET).bin : built-in.o
 	$(OBJCOPY) -O binary -S $(TARGET).elf $@
 	$(OBJDUMP) -D -m arm $(TARGET).elf > $(TARGET).dis
 
-# === 伪目标
+# === 伪目标 Begin
 .PHONY: clean
 clean:
 # make -C drivers clean
@@ -117,5 +122,5 @@ printvars:
 	CFLAGS:        \"$(CFLAGS)\"\n\
 	LDFLAGS:       \"$(LDFLAGS)\"\n\
 	TARGET:        \"$(TARGET)\"\n"
+# === 伪目标 End
 
-# === End
