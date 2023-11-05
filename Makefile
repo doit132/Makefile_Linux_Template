@@ -81,7 +81,7 @@ all : start_recursive_build $(TARGET).bin
 	@echo $(TARGET) has been built!
 
 start_recursive_build:
-	make -C ./ -f $(TOPDIR)/Makefile.build
+	$(MAKE) -C ./ -f $(TOPDIR)/Makefile.build
 
 $(TARGET).bin : built-in.o
 	$(CC) $(LDFLAGS) -o $(TARGET).elf built-in.o
