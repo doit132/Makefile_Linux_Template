@@ -8,17 +8,18 @@ LOG_FILES=("$WARN_LOG_FILE" "$INFO_LOG_FILE")
 
 # 检查目录是否存在，不存在则创建
 if [ ! -d "$LOG_DIR" ]; then
-    mkdir -p "$LOG_DIR"
+        mkdir -p "$LOG_DIR"
 fi
 
 # 检查文件是否存在，不存在则创建
 for file in "${LOG_FILES[@]}"; do
-    if [ ! -f "$file" ]; then
-        touch "$file"
-    fi
+        if [ ! -f "$file" ]; then
+                touch "$file"
+        fi
 done
 
-make -j1 1>log/info.log 2>log/warn.log
+# 这里不能使用 make -jN 进行编译, 否则必定报错
+make 1>log/info.log 2>log/warn.log
 # === End
 
 # 检测 log/warn.log 文件是否为空, 如果为空说明没有错误信息, 后续不需要对其内容进行正则替换
@@ -45,7 +46,6 @@ replace_string=(
 )
 
 # 使用循环和sed命令对文件内容进行正则替换
-for ((i=0; i<${#search_string[@]}; i++)); do
+for ((i = 0; i < ${#search_string[@]}; i++)); do
         sed -i -E "s#${search_string[$i]}#${replace_string[$i]}#g" "$file_path"
 done
-
