@@ -58,14 +58,15 @@ OPTIMIZEFLAGS := -O2
 #   -fexec-charset=gbk : 告诉编译器在生成可执行文件时使用 GBK 字符集, 用于支持中文
 CHARENCODINGFLAGS := -fexec-charset=gbk
 
-CFLAGS := -fomit-frame-pointer -nostdlib
+CFLAGS := -fomit-frame-pointer
 CFLAGS += $(WARNFLAGS) $(OPTIMIZEFLAGS) $(CHARENCODINGFLAGS)
 # == 编译选项 End
 
 # TODO 链接选项 Beign
 # 链接选项
 # LDFLAGS := -T$(LDPATH)
-LDFLAGS :=
+# -nostdlib 不链接标准库
+LDFLAGS := -nostdlib
 # TODO 链接选项 End
 
 export CFLAGS LDFLAGS INCFLAGS

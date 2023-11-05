@@ -55,6 +55,7 @@ $(subdir-y):
 dep_file = .$@.d
 
 # 规则 3: 链接当前目录下的 .o 和子目录下的 built-in.o 文件
+# -r 表示生成可重定位的目标文件, 链接可重定位文件的时候, 不会链接标准库文件
 built-in.o : $(cur_objs) $(subdir_objs)
 	$(LD) -r -o $@ $^
 
