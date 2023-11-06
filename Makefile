@@ -91,7 +91,7 @@ start_recursive_build:
 
 # 如果使用 CC 编译链接, 则会自动链接标准库文件, 如果使用 LD 则不会自动链接标准库文件
 $(TARGET).bin : built-in.o
-	$(CC) $(LDFLAGS) -o $(TARGET).elf built-in.o
+	$(LD) $(LDFLAGS) -o $(TARGET).elf built-in.o
 	$(OBJCOPY) -O binary -S $(TARGET).elf $@
 	$(OBJDUMP) -D -m arm $(TARGET).elf > $(TARGET).dis
 
