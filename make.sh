@@ -18,6 +18,20 @@ for file in "${LOG_FILES[@]}"; do
         fi
 done
 
+file_exist=(
+        "./*.imx"
+        "./*.img"
+        "./*.bin"
+)
+
+# 使用循环和sed命令对文件内容进行正则替换
+for ((i = 0; i < ${#file_exist[@]}; i++)); do
+        if ls ${file_exist[$i]} 1>/dev/null 2>&1; then
+                make distclean
+                break
+        fi
+done
+
 # 这里不能使用 make -jN 进行编译, 否则必定报错
 make 1>log/info.log 2>log/warn.log
 # === End
@@ -26,9 +40,8 @@ make 1>log/info.log 2>log/warn.log
 file_path="log/warn.log"
 file_contents=$(cat "$file_path" | tr -d '[:space:]')
 
-if [ -z "$file_contents" ]; then
-        echo "编译成功!!!"
-        exit 0
+if grep -qiE "warn|error" "$file_path"; then
+        code -r "$file_path"
 fi
 
 # 需要替换的字符串数组
@@ -48,4 +61,12 @@ replace_string=(
 # 使用循环和sed命令对文件内容进行正则替换
 for ((i = 0; i < ${#search_string[@]}; i++)); do
         sed -i -E "s#${search_string[$i]}#${replace_string[$i]}#g" "$file_path"
+done
+
+for ((i = 0; i < ${#file_exist[@]}; i++)); do
+        if ls ${file_exist[$i]} 1>/dev/null 2>&1; then
+                echo "编译成功!!!"
+                make copy_imx_file
+                exit 0
+        fi
 done
