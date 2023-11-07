@@ -80,7 +80,7 @@ TARGET := test
 obj-y +=
 
 # 被编译的子目录
-obj-y += bootloader/
+obj-y += example/
 # TODO 被编译的目录, 被编译的当前目录下的文件 End
 
 all : start_recursive_build $(TARGET).bin
@@ -124,5 +124,10 @@ printvars:
 	CFLAGS:        \"$(CFLAGS)\"\n\
 	LDFLAGS:       \"$(LDFLAGS)\"\n\
 	TARGET:        \"$(TARGET)\"\n"
+
+.PHONY: time
+time:
+	echo "start test time"
+	@time make
 # === 伪目标 End
 
