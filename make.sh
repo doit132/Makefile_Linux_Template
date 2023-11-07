@@ -18,10 +18,7 @@ for file in "${LOG_FILES[@]}"; do
         fi
 done
 
-# 通过最后生成的 imx 后缀文件来判断是否编译成功
-if ls ./*.imx 1>/dev/null 2>&1; then
-        make distclean
-fi
+make distclean
 
 # 这里不能使用 make -jN 进行编译, 否则必定报错
 make 1>log/info.log 2>log/warn.log
@@ -55,7 +52,7 @@ for ((i = 0; i < ${#search_string[@]}; i++)); do
 done
 
 # 通过最后生成的 imx 后缀文件来判断是否编译成功
-if ls ./*.imx 1>/dev/null 2>&1; then
+if ls ./*.bin 1>/dev/null 2>&1; then
         echo "编译成功!!!"
         exit 0
 fi
